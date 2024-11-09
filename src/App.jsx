@@ -1,8 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 import Home from "./Pages/Home";
 
 function App() {
   const { logout, loginWithRedirect, user, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();  // Initialize navigate function
+
+  // Redirect to Home page after successful login
+  if (isAuthenticated) {
+    navigate("/home");
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">

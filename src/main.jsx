@@ -1,8 +1,10 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
+import Home from "./Pages/Home";  // Import Home page
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,7 +15,12 @@ createRoot(document.getElementById("root")).render(
         redirect_uri: window.location.origin,
       }}
     >
-      <App />
+      <Router>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/home" element={<Home />} />  {/* Define the route for Home */}
+        </Routes>
+      </Router>
     </Auth0Provider>
   </StrictMode>
 );
