@@ -29,12 +29,10 @@ To get this project up and running on your local machine, follow these steps:
    ```bash
    npm install
 
-3. **Run the app:**
-```bash
-npm start
+4. **Run the app**:
+   ```bash
+   npm startDeployment link
 
-
-##Deployment link
-
-
-
+5. **Deployment link**
+   ```bash
+   https://notes-take-sigma.vercel.app/
