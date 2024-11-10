@@ -1,4 +1,3 @@
-// AddNote.js
 import React, { useState } from "react";
 import NoteCard from "./NoteCard";
 
@@ -6,6 +5,7 @@ const AddNote = () => {
   const [noteContent, setNoteContent] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const [notes, setNotes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // New search query state
 
   const handleTitleChange = (e) => {
     setNoteTitle(e.target.value);
@@ -28,12 +28,25 @@ const AddNote = () => {
     }
   };
 
+  const deleteNote = (id) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  };
+
   // Update note content
   const handleUpdateNote = (id, newContent) => {
     setNotes((prevNotes) =>
-      prevNotes.map((note) => (note.id === id ? { ...note, content: newContent } : note))
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, content: newContent } : note
+      )
     );
   };
+
+  // Filter notes based on the search query
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="bg-gray-700 min-h-screen py-8">
@@ -64,18 +77,30 @@ const AddNote = () => {
         </button>
       </form>
 
+      {/* Search Input */}
+      <div className="w-full max-w-lg mx-auto mb-8">
+        <input
+          type="text"
+          className="w-full p-3 rounded-md bg-gray-800 bg-opacity-50 text-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 text-sm"
+          placeholder="Search notes..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+        />
+      </div>
+
       {/* Notes Display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {notes.length > 0 ? (
-          notes.map((note) => (
+        {filteredNotes.length > 0 ? (
+          filteredNotes.map((note) => (
             <NoteCard
               key={note.id}
               note={note}
               onUpdateNote={handleUpdateNote}
+              onDeleteNote={deleteNote}
             />
           ))
         ) : (
-          <p className="text-gray-600 text-center">No notes yet.</p>
+          <p className="text-gray-600 text-center">No matching notes found.</p>
         )}
       </div>
     </div>

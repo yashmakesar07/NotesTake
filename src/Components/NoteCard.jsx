@@ -1,7 +1,6 @@
-// NoteCard.js
 import React, { useState } from "react";
 
-const NoteCard = ({ note, onUpdateNote }) => {
+const NoteCard = ({ note, onUpdateNote, onDeleteNote }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(note.content);
 
@@ -16,9 +15,15 @@ const NoteCard = ({ note, onUpdateNote }) => {
     onUpdateNote(note.id, e.target.value); // Update note content in the parent component
   };
 
+  // Handle delete note
+  const handleDelete = (e) => {
+    e.stopPropagation(); // Prevent triggering the toggle edit mode when deleting
+    onDeleteNote(note.id); // Call delete function passed from the parent component
+  };
+
   return (
     <div
-      className="bg-gray-700 p-6 rounded-lg border border-gray-500 shadow-md hover:shadow-xl transition-all cursor-pointer"
+      className="bg-gray-700 p-6 rounded-lg border border-gray-500 shadow-md hover:shadow-xl transition-all cursor-pointer relative"
       onClick={toggleEditMode}
     >
       {/* Clickable Title */}
@@ -36,6 +41,14 @@ const NoteCard = ({ note, onUpdateNote }) => {
       ) : (
         <p className="mt-2 text-gray-300">{note.content}</p>
       )}
+
+      {/* Delete Button */}
+      <button
+        onClick={handleDelete}
+        className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+      >
+        ✕
+      </button>
     </div>
   );
 };

@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const NavBar = () => {
+const NavBar = ({ onSearch }) => {
   const { user, logout, isAuthenticated } = useAuth0();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    onSearch(query); // Call the onSearch function passed from the parent component
+  };
 
   return (
     <header className="w-full bg-gray-800 shadow-md">
       {/* Navbar Container */}
-      <nav className="container mx-auto flex items-center justify-between p-4">
+      <nav className="container mx-auto flex items-center justify-between p-4 space-x-4">
         
         {/* App Name */}
         <h2 className="text-2xl font-bold text-blue-600">Notes</h2>
+        
         
         {/* User Info and Logout Button */}
         {isAuthenticated && (
